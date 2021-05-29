@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
   release:
@@ -24,6 +25,8 @@ jobs:
 
       - run: sudo npm i -g pkg
       - run: npm ci
+
+      - run: cat package.json
 
       - run: npm publish --access public
         env:
@@ -111,7 +114,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: |
-            jesec/flood:latest
-            jesec/flood:${{ steps.parse_semver.outputs.MAJOR_VERSION }}
-            jesec/flood:${{ steps.parse_semver.outputs.MAJOR_MINOR }}
-            jesec/flood:${{ steps.parse_semver.outputs.FULL_VERSION }}
+            sabersalv/flood:latest
+            sabersalv/flood:${{ steps.parse_semver.outputs.MAJOR_VERSION }}
+            sabersalv/flood:${{ steps.parse_semver.outputs.MAJOR_MINOR }}
+            sabersalv/flood:${{ steps.parse_semver.outputs.FULL_VERSION }}
