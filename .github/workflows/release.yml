@@ -73,7 +73,8 @@ jobs:
       - name: Parse semantic version
         id: parse_semver
         run: |
-          full_version=`echo ${GITHUB_REF/refs\/tags\/v/}`
+          # full_version=`echo ${GITHUB_REF/refs\/tags\/v/}`
+          full_version=4.6.2
           major_version=`echo $full_version | cut -d'.' -f1`
           minor_version=`echo $full_version | cut -d'.' -f2`
           major_minor=`echo $major_version.$minor_version`
@@ -98,7 +99,7 @@ jobs:
       - name: Wait until the package is available
         uses: nick-invision/retry@v2
         with:
-          command: curl -f -s https://registry.npmjs.org/flood/${{ steps.parse_semver.outputs.FULL_VERSION }} &>/dev/null
+          command: curl -f -s https://registry.npmjs.org/@sabersalv/flood/${{ steps.parse_semver.outputs.FULL_VERSION }} &>/dev/null
           timeout_minutes: 30
           max_attempts: 15
           retry_wait_seconds: 15
