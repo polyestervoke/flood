@@ -65,7 +65,7 @@ jobs:
   #           dist-pkg/flood-win-arm64.exe
 
   release-docker:
-    needs: release
+    # needs: release
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
