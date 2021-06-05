@@ -8,3 +8,13 @@ Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://
 ## Install
 
 - Docker Image: [sabersalv/flood](https://hub.docker.com/r/sabersalv/flood/)
+
+## Release
+
+```
+vi package.json
+  "version": 1.0.0
+git tag v1.0.0
+git push --tags
+```
+
