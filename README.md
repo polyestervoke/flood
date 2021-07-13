@@ -4,6 +4,7 @@ Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://
 
 - Save torrent file as human name instead of hash name: [PR](https://github.com/sabersalv/flood/pull/3), [Discussion](https://github.com/jesec/flood/pull/316)
 - Change cookie SameSite from Strict to Lax: [PR](https://github.com/sabersalv/flood/pull/4), [Discussion](https://github.com/jesec/flood/pull/318)
+- Can use freeleech token on RSS feed: [PR](https://github.com/sabersalv/flood/pull/5)
 
 ## Install
 
@@ -17,4 +18,3 @@ vi package.json
 git tag v1.0.0
 git push --tags
 ```
-
