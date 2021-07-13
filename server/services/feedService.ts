@@ -336,7 +336,7 @@ class FeedService extends BaseService {
   }
 }
 
-function transformUrls({urls, feedUrl}) {
+function transformUrls({urls, feedUrl}: {urls: string[]; feedUrl: string}): string[] {
   const url = new URL(feedUrl);
   const params = mapKeys(
     pickBy(Object.fromEntries(url.searchParams), (v, k) => k.startsWith('_')),
