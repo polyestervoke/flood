@@ -1,5 +1,7 @@
 import path from 'path';
 import Datastore from 'nedb-promises';
+import {URL, URLSearchParams} from 'url';
+import {mapKeys, pickBy} from 'lodash';
 
 import type {FeedItem} from 'feedsub';
 
@@ -272,7 +274,7 @@ class FeedService extends BaseService {
 
             await this.services?.clientGatewayService
               ?.addTorrentsByURL({
-                urls,
+                urls: transformUrls({urls, feedUrl: feedReaderOptions.url}),
                 cookies: {},
                 destination,
                 tags,
@@ -332,6 +334,19 @@ class FeedService extends BaseService {
 
     return this.db.remove({_id: id}, {}).then(() => undefined);
   }
+}
+
+function transformUrls({urls, feedUrl}) {
+  const url = new URL(feedUrl);
+  const params = mapKeys(
+    pickBy(Object.fromEntries(url.searchParams), (v, k) => k.startsWith('_')),
+    (v, k) => k.slice(1),
+  );
+  const search = new URLSearchParams(params).toString();
+  if (search.length === 0) {
+    return urls;
+  }
+  return urls.map((url) => `${url}&${search}`);
 }
 
 export default FeedService;
