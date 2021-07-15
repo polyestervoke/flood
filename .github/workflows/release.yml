@@ -78,8 +78,7 @@ jobs:
       - name: Parse semantic version
         id: parse_semver
         run: |
-          # full_version=`echo ${GITHUB_REF/refs\/tags\/v/}`
-          full_version=4.6.2
+          full_version=`echo ${GITHUB_REF/refs\/tags\/v/}`
           major_version=`echo $full_version | cut -d'.' -f1`
           minor_version=`echo $full_version | cut -d'.' -f2`
           major_minor=`echo $major_version.$minor_version`
