@@ -1,4 +1,6 @@
 const TorrentContextMenuActions = {
+  selectedCount: 'torrents.list.context.selected.count.label',
+  selectAll: 'torrents.list.context.select.all',
   start: 'torrents.list.context.start',
   stop: 'torrents.list.context.stop',
   remove: 'torrents.list.context.remove',
