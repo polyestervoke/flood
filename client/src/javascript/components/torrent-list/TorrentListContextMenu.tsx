@@ -50,6 +50,33 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       clickHandler: () => null,
     },
     {
+      type: 'action',
+      action: 'selectAll',
+      label: TorrentStore.isAllSelected
+        ? TorrentContextMenuActions.selectAll.replace(/select/, 'deselect')
+        : TorrentContextMenuActions.selectAll,
+      clickHandler: () => {
+        if (TorrentStore.isAllSelected) {
+          UIActions.deselectAllTorrents();
+        } else {
+          UIActions.selectAllTorrents();
+        }
+      },
+    },
+    {
+      type: 'separator',
+    },
+    {
+      type: 'action',
+      action: 'selectedCount',
+      label: TorrentContextMenuActions.selectedCount,
+      labelComp: () => (
+        <Trans id="torrents.list.context.selected.count.text" values={{count: TorrentStore.selectedCount}} />
+      ),
+      labelAction: () => <Size value={TorrentStore.selectedSize} className="size" />,
+      clickHandler: () => null,
+    },
+    {
       type: 'separator',
     },
     {
