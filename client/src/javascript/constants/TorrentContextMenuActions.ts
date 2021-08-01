@@ -1,4 +1,6 @@
 const TorrentContextMenuActions = {
+  selectedCount: 'torrents.list.context.selected.count.label',
+  selectAll: 'torrents.list.context.select.all',
   start: 'torrents.list.context.start',
   stop: 'torrents.list.context.stop',
   remove: 'torrents.list.context.remove',
@@ -14,8 +16,6 @@ const TorrentContextMenuActions = {
   setInitialSeeding: 'torrents.list.context.initial.seeding',
   setSequential: 'torrents.list.context.sequential',
   setPriority: 'torrents.list.context.priority',
-  selectedCount: 'torrents.list.context.selected.count.label',
-  selectAll: 'torrents.list.context.select.all',
 } as const;
 
 export default TorrentContextMenuActions;
