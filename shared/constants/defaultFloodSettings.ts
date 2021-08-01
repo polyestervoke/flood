@@ -49,6 +49,7 @@ const defaultFloodSettings: Readonly<FloodSettings> = {
     tags: 100,
   },
   torrentContextMenuActions: [
+    {id: 'selectedCount', visible: false},
     {id: 'start', visible: true},
     {id: 'stop', visible: true},
     {id: 'remove', visible: true},
