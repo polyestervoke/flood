@@ -155,7 +155,9 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
         const link = document.createElement('a');
 
         link.download = '';
-        link.href = `${ConfigStore.baseURI}api/torrents/${TorrentStore.selectedTorrents.join(',')}/metainfo`;
+        link.href = `${ConfigStore.baseURI}api/torrents/${TorrentStore.selectedTorrents.join(
+          ',',
+        )}/metainfo?human-name=1`;
         link.style.display = 'none';
 
         document.body.appendChild(link);
