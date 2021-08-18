@@ -36,7 +36,7 @@ $torrent-list--border: rgba(colors.$sidebar--background, 0.15);
     }
 
     &--sort-torrents {
-      flex: 1 0 auto;
+      flex: 0 0 auto;
       display: flex;
       align-items: center;
 
@@ -48,6 +48,33 @@ $torrent-list--border: rgba(colors.$sidebar--background, 0.15);
 
       .action-bar--is-condensed & {
         display: none;
+      }
+    }
+
+    &--selected-status {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      color: #8899a8;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      .action-bar--is-condensed & {
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: 375px) {
+        display: none;
+      }
+
+      .size {
+        &::before {
+          content: '(';
+        }
+        &::after {
+          content: ')';
+        }
       }
     }
 
