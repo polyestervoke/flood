@@ -609,7 +609,8 @@ router.get<{hashes: string}>(
         map: function (header) {
           if (torrentList) {
             const torrent = torrentList.torrents[`${header.name.replace(/\.torrent$/, '')}`];
-            header.name = `${torrent.name}.torrent`;
+            const trackerId = getTrackerId(torrent.trackerURIs[0]);
+            header.name = `[${trackerId}]${torrent.name}.torrent`;
           }
           return header;
         },
@@ -979,5 +980,10 @@ router.get(
       ({code, message}) => res.status(500).json({code, message}),
     ),
 );
+
+function getTrackerId(trackerURI: string): string {
+  const parts = trackerURI.split('.');
+  return parts[parts.length - 2];
+}
 
 export default router;
