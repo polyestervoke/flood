@@ -5,6 +5,9 @@ Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://
 - Save torrent file as human name instead of hash name: [PR](https://github.com/sabersalv/flood/pull/3), [Discussion](https://github.com/jesec/flood/pull/316)
 - Change cookie SameSite from Strict to Lax: [PR](https://github.com/sabersalv/flood/pull/4), [Discussion](https://github.com/jesec/flood/pull/318)
 - Can use freeleech token on RSS feed: [PR](https://github.com/sabersalv/flood/pull/5)
+- Display selected count and size on action bar: [PR](https://github.com/sabersalv/flood/pull/9)
+- Select all button on action bar: [PR](https://github.com/sabersalv/flood/pull/10)
+- Click to play video: [PR](https://github.com/sabersalv/flood/pull/11)
 
 ## Install
 
