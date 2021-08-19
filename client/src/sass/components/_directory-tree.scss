@@ -225,7 +225,8 @@ $selection-toolbar--height: variables.$spacing-unit * 1.5;
           }
         }
 
-        &--clipboard {
+        &--clipboard,
+        &--player {
           outline: none;
           .icon {
             fill: currentColor;

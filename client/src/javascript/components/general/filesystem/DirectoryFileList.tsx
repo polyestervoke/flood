@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import {FC, ReactText, useRef, useState} from 'react';
 
 import {Checkbox} from '@client/ui';
-import {Checkmark, Clipboard, File as FileIcon} from '@client/ui/icons';
+import {Checkmark, Clipboard, File as FileIcon, Player} from '@client/ui/icons';
 import ConfigStore from '@client/stores/ConfigStore';
 import TorrentActions from '@client/actions/TorrentActions';
 
@@ -136,6 +136,16 @@ const DirectoryFiles: FC<DirectoryFilesProps> = ({depth, items, hash, path, onIt
               {copiedToClipboard === file.index ? <Checkmark /> : <Clipboard />}
             </button>
           )}
+          <button
+            className="file__detail file__detail--secondary file__detail--player"
+            type="button"
+            onClick={() => {
+              TorrentActions.getTorrentContentsDataPermalink(hash, [file.index]).then((url) => {
+                window.open(`iina://weblink?url=${url}`, '_self');
+              });
+            }}>
+            <Player />
+          </button>
         </div>
       );
     });
