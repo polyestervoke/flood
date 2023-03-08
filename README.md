@@ -21,3 +21,15 @@ vi package.json
 git tag v1.0.0
 git push --tags
 ```
+
+## Development
+
+```
+brew install rtorrent
+npm install
+npm run build
+npm run start:development:client
+npm run start:development:server
+rtorrent -o network.scgi.open_local=/tmp/rtorrent.sock
+```
+
