@@ -1,10 +1,8 @@
 const path = require('path');
-const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const WebpackBar = require('webpackbar');
 const paths = require('../../shared/config/paths');
 
@@ -63,29 +61,19 @@ module.exports = {
       },
       {
         test: [/\.woff2$/],
-        loader: require.resolve('file-loader'),
-        options: {
-          name: 'static/media/[name].[hash:8].[ext]',
-        },
+        type: 'asset/resource',
       },
       {
         include: [/\.svg$/],
         issuer: /\.s?css$/,
-        loader: require.resolve('file-loader'),
-        options: {
-          name: 'static/media/[name].[hash:8].[ext]',
-        },
+        type: 'asset/resource',
       },
       // "url" loader works like "file" loader except that it embeds assets
       // smaller than specified limit in bytes as data URLs to avoid requests.
       // A missing `test` is equivalent to a match.
       {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-        loader: require.resolve('url-loader'),
-        options: {
-          limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]',
-        },
+        type: 'asset/resource',
       },
       // https://github.com/lingui/js-lingui/issues/1048
       {
@@ -111,6 +99,7 @@ module.exports = {
     filename: 'static/js/bundle.js',
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
+    assetModuleFilename: 'static/media/[name].[hash:8].[ext]',
   },
   plugins: [
     new ESLintPlugin({
@@ -123,18 +112,11 @@ module.exports = {
       inject: true,
       template: paths.appHtml,
     }),
-    // This is necessary to emit hot updates (currently CSS only):
-    new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use
     // a plugin that prints an error when you attempt to do this.
     // See https://github.com/facebookincubator/create-react-app/issues/240
     new CaseSensitivePathsPlugin(),
-    // If you require a missing module and then `npm install` it, you still have
-    // to restart the development server for Webpack to discover it. This plugin
-    // makes the discovery automatic so you don't have to restart.
-    // See https://github.com/facebookincubator/create-react-app/issues/186
-    new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     new WebpackBar(),
   ],
   devtool: 'source-map',

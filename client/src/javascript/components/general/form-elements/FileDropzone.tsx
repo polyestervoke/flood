@@ -8,11 +8,12 @@ import {FormRowItem} from '@client/ui';
 export type ProcessedFiles = Array<{name: string; data: string}>;
 
 interface FileDropzoneProps {
+  initialFiles?: ProcessedFiles;
   onFilesChanged: (files: ProcessedFiles) => void;
 }
 
-const FileDropzone: FC<FileDropzoneProps> = ({onFilesChanged}: FileDropzoneProps) => {
-  const [files, setFiles] = useState<ProcessedFiles>([]);
+const FileDropzone: FC<FileDropzoneProps> = ({initialFiles, onFilesChanged}: FileDropzoneProps) => {
+  const [files, setFiles] = useState<ProcessedFiles>(initialFiles ?? []);
 
   useEffect(() => {
     onFilesChanged(files);
@@ -28,7 +29,8 @@ const FileDropzone: FC<FileDropzoneProps> = ({onFilesChanged}: FileDropzoneProps
           onClick={(event) => {
             event.stopPropagation();
           }}
-          role="none">
+          role="none"
+        >
           <ul className="dropzone__selected-files interactive-list">
             {files.map((file, index) => (
               <li className="dropzone__selected-files__file interactive-list__item" key={file.name} title={file.name}>
@@ -43,7 +45,8 @@ const FileDropzone: FC<FileDropzoneProps> = ({onFilesChanged}: FileDropzoneProps
                     const newArray = files.slice();
                     newArray.splice(index, 1);
                     setFiles(newArray);
-                  }}>
+                  }}
+                >
                   <Close />
                 </button>
               </li>
@@ -69,11 +72,13 @@ const FileDropzone: FC<FileDropzoneProps> = ({onFilesChanged}: FileDropzoneProps
             };
             reader.readAsDataURL(file);
           });
-        }}>
+        }}
+      >
         {({getRootProps, getInputProps, isDragActive}) => (
           <div
             {...getRootProps()}
-            className={`form__dropzone dropzone interactive-list ${isDragActive ? 'dropzone--is-dragging' : ''}`}>
+            className={`form__dropzone dropzone interactive-list ${isDragActive ? 'dropzone--is-dragging' : ''}`}
+          >
             <input {...getInputProps()} />
             <div className="dropzone__copy">
               <div className="dropzone__icon">

@@ -7,9 +7,8 @@ import rateLimit from 'express-rate-limit';
 import {contentTokenSchema} from '@shared/schema/api/torrents';
 
 import type {FloodSettings} from '@shared/types/FloodSettings';
-import type {HistorySnapshot} from '@shared/constants/historySnapshotTypes';
 import type {NotificationFetchOptions, NotificationState} from '@shared/types/Notification';
-import type {SetFloodSettingsOptions} from '@shared/types/api/index';
+import type {DirectoryListQuery, DirectoryListResponse, SetFloodSettingsOptions} from '@shared/types/api/index';
 
 import {accessDeniedError, isAllowedPath, sanitizePath} from '../../util/fileUtil';
 import appendUserServices from '../../middleware/appendUserServices';
@@ -100,9 +99,9 @@ router.get('/activity-stream', eventStream, clientActivityStream);
  * @return {Error} 422 - invalid argument - application/json
  * @return {Error} 500 - other errors - application/json
  */
-router.get<unknown, unknown, unknown, {path: string}>(
+router.get<unknown, unknown, unknown, DirectoryListQuery>(
   '/directory-list',
-  async (req, res): Promise<Response<unknown>> => {
+  async (req, res): Promise<Response<DirectoryListResponse>> => {
     const {path: inputPath} = req.query;
 
     if (typeof inputPath !== 'string' || !inputPath) {
@@ -163,12 +162,11 @@ router.get<unknown, unknown, unknown, {path: string}>(
  * @summary Gets transfer history in the given interval
  * @tags Flood
  * @security User
- * @param {HistorySnapshot} snapshot.query - interval
  * @return {TransferHistory} 200 - success response - application/json
  * @return {Error} 500 - failure response - application/json
  */
-router.get<unknown, unknown, unknown, {snapshot: HistorySnapshot}>('/history', (req, res) => {
-  req.services.historyService.getHistory(req.query).then(
+router.get('/history', (req, res) => {
+  req.services.historyService.getHistory().then(
     (snapshot) => {
       res.json(snapshot);
     },

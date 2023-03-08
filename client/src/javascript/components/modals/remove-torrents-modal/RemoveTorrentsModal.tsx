@@ -59,9 +59,10 @@ const RemoveTorrentsModal: FC = () => {
               }).then(() => {
                 setIsRemoving(false);
                 saveDeleteTorrentsUserPreferences({deleteData});
-                UIStore.dismissModal();
+                UIStore.setActiveModal(null);
               });
-            }}>
+            }}
+          >
             <FormRow>
               <Trans id="torrents.remove.are.you.sure" values={{count: selectedTorrents.length}} />
             </FormRow>

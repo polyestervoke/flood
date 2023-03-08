@@ -10,17 +10,18 @@ import type {TransferRateGraphEventHandlers, TransferRateGraphInspectorPoint} fr
 
 const TransferData: FC = observer(() => {
   const [graphInspectorPoint, setGraphInspectorPoint] = useState<TransferRateGraphInspectorPoint | null>(null);
-  const [sidebarWidth, setSidebarWidth] = useState<number>(0);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(250);
   const rateGraphHandlerRefs = useRef<TransferRateGraphEventHandlers>(null);
 
   return (
     <Measure
       offset
       onResize={(contentRect) => {
-        if (contentRect.offset != null) {
+        if (contentRect.offset?.width) {
           setSidebarWidth(contentRect.offset.width);
         }
-      }}>
+      }}
+    >
       {({measureRef}) => (
         <div ref={measureRef} className="client-stats__wrapper sidebar__item">
           <div
@@ -33,7 +34,8 @@ const TransferData: FC = observer(() => {
             onMouseOver={() => rateGraphHandlerRefs.current?.handleMouseOver()}
             onMouseOut={() => rateGraphHandlerRefs.current?.handleMouseOut()}
             onFocus={() => rateGraphHandlerRefs.current?.handleMouseOver()}
-            onBlur={() => rateGraphHandlerRefs.current?.handleMouseOut()}>
+            onBlur={() => rateGraphHandlerRefs.current?.handleMouseOut()}
+          >
             <TransferRateDetails inspectorPoint={graphInspectorPoint} />
             {ClientStatusStore.isConnected && (
               <TransferRateGraph

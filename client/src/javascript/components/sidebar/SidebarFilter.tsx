@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import {FC, ReactNode} from 'react';
+import {FC, ReactNode, KeyboardEvent, MouseEvent, TouchEvent} from 'react';
 import {useLingui} from '@lingui/react';
 
 import Badge from '../general/Badge';
@@ -12,7 +12,7 @@ interface SidebarFilterProps {
   slug: string;
   count: number;
   size?: number;
-  handleClick: (slug: string) => void;
+  handleClick: (slug: string, event: KeyboardEvent | MouseEvent | TouchEvent) => void;
 }
 
 const SidebarFilter: FC<SidebarFilterProps> = ({
@@ -57,8 +57,9 @@ const SidebarFilter: FC<SidebarFilterProps> = ({
           },
         }}
         type="button"
-        onClick={() => handleClick(slug)}
-        role="menuitem">
+        onClick={(event) => handleClick(slug, event)}
+        role="menuitem"
+      >
         {icon}
         <span className="name">{name}</span>
         <Badge>{count}</Badge>

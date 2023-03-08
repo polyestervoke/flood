@@ -1,5 +1,5 @@
-@use "sass:color";
-@use "sass:math";
+@use 'sass:color';
+@use 'sass:math';
 
 @use '../tools/colors';
 @use '../tools/variables';
@@ -122,6 +122,7 @@ $sortable-list--item--border--preview: color.adjust($sortable-list--item--border
 
     &--primary {
       flex: 1 1 auto;
+      user-select: none;
     }
 
     &--secondary {

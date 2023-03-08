@@ -6,7 +6,7 @@ import ConfigStore from '@client/stores/ConfigStore';
 import TorrentActions from '@client/actions/TorrentActions';
 import TorrentContextMenuActions from '@client/constants/TorrentContextMenuActions';
 import TorrentStore from '@client/stores/TorrentStore';
-import UIActions from '@client/actions/UIActions';
+import UIStore from '@client/stores/UIStore';
 
 import type {ContextMenuItem} from '@client/stores/UIStore';
 
@@ -24,7 +24,8 @@ const InlineTorrentPropertyCheckbox: FC<{property: keyof TorrentProperties}> = o
           className="toggle-input__indicator__icon"
           style={{
             opacity: TorrentStore.torrents[getLastSelectedTorrent()][property] ? '1' : undefined,
-          }}>
+          }}
+        >
           <Checkmark />
         </div>
       </div>
@@ -32,7 +33,7 @@ const InlineTorrentPropertyCheckbox: FC<{property: keyof TorrentProperties}> = o
   ),
 );
 
-const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem> => {
+export const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem> => {
   const changePriorityFuncRef = createRef<() => number>();
 
   return [
@@ -61,7 +62,7 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       action: 'remove',
       label: TorrentContextMenuActions.remove,
       clickHandler: () => {
-        UIActions.displayModal({id: 'remove-torrents'});
+        UIStore.setActiveModal({id: 'remove-torrents'});
       },
     },
     {
@@ -92,7 +93,7 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       action: 'setTaxonomy',
       label: TorrentContextMenuActions.setTaxonomy,
       clickHandler: () => {
-        UIActions.displayModal({id: 'set-taxonomy'});
+        UIStore.setActiveModal({id: 'set-taxonomy'});
       },
     },
     {
@@ -100,7 +101,7 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       action: 'move',
       label: TorrentContextMenuActions.move,
       clickHandler: () => {
-        UIActions.displayModal({id: 'move-torrents'});
+        UIStore.setActiveModal({id: 'move-torrents'});
       },
     },
     {
@@ -108,7 +109,7 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       action: 'setTrackers',
       label: TorrentContextMenuActions.setTrackers,
       clickHandler: () => {
-        UIActions.displayModal({id: 'set-trackers'});
+        UIStore.setActiveModal({id: 'set-trackers'});
       },
     },
     {
@@ -119,7 +120,7 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       action: 'torrentDetails',
       label: TorrentContextMenuActions.torrentDetails,
       clickHandler: () => {
-        UIActions.displayModal({
+        UIStore.setActiveModal({
           id: 'torrent-details',
           hash: getLastSelectedTorrent(),
         });
@@ -170,7 +171,7 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       action: 'generateMagnet',
       label: TorrentContextMenuActions.generateMagnet,
       clickHandler: () => {
-        UIActions.displayModal({id: 'generate-magnet'});
+        UIStore.setActiveModal({id: 'generate-magnet'});
       },
     },
     {
@@ -229,8 +230,4 @@ const getContextMenuItems = (torrent: TorrentProperties): Array<ContextMenuItem>
       ),
     },
   ];
-};
-
-export default {
-  getContextMenuItems,
 };

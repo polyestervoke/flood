@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import {FC, ReactNode, ReactNodeArray, useEffect, useRef, useState} from 'react';
+import {FC, ReactElement, ReactNode, useEffect, useRef, useState} from 'react';
 import {sort} from 'fast-sort';
 import {Trans} from '@lingui/react';
 import {useKeyPressEvent} from 'react-use';
@@ -86,12 +86,14 @@ const TagSelect: FC<TagSelectProps> = ({defaultValue, placeholder, id, label, on
             }
           }}
           placeholder={placeholder}
-          ref={textboxRef}>
+          ref={textboxRef}
+        >
           <FormElementAddon
             onClick={() => {
               setIsOpen(!isOpen);
             }}
-            className="select__indicator">
+            className="select__indicator"
+          >
             <Chevron />
           </FormElementAddon>
           <Portal>
@@ -104,14 +106,15 @@ const TagSelect: FC<TagSelectProps> = ({defaultValue, placeholder, id, label, on
               }}
               overlayProps={{isInteractive: false}}
               ref={menuRef}
-              triggerRef={textboxRef}>
+              triggerRef={textboxRef}
+            >
               {[
                 ...new Set([
                   'untagged',
                   ...sort(Object.keys(TorrentFilterStore.taxonomy.tagCounts)).asc(),
                   ...selectedTags,
                 ]),
-              ].reduce((accumulator: ReactNodeArray, tag) => {
+              ].reduce((accumulator: Array<ReactElement>, tag) => {
                 if (tag === '') {
                   return accumulator;
                 }
@@ -129,7 +132,8 @@ const TagSelect: FC<TagSelectProps> = ({defaultValue, placeholder, id, label, on
                       } else {
                         setSelectedTags([...selectedTags.filter((key) => key !== ''), tag]);
                       }
-                    }}>
+                    }}
+                  >
                     {tag === 'untagged' ? <Trans id="filter.untagged" /> : tag}
                   </SelectItem>,
                 );

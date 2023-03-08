@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import {forwardRef, MutableRefObject, ReactNode, useEffect, useRef, useState} from 'react';
+import {forwardRef, MutableRefObject, ReactElement, ReactNode, useEffect, useRef, useState} from 'react';
 import {Trans, useLingui} from '@lingui/react';
 import {useEnsuredForwardedRef} from 'react-use';
 
@@ -67,7 +67,7 @@ const FilesystemBrowserTextbox = forwardRef<HTMLInputElement, FilesystemBrowserT
       };
     }, []);
 
-    const toggles: React.ReactNodeArray = [];
+    const toggles: Array<ReactElement> = [];
     if (showBasePathToggle) {
       toggles.push(
         <Checkbox grow={false} id="isBasePath" key="isBasePath">
@@ -119,14 +119,16 @@ const FilesystemBrowserTextbox = forwardRef<HTMLInputElement, FilesystemBrowserT
             )}
             onClick={(event) => event.nativeEvent.stopImmediatePropagation()}
             placeholder={i18n._('torrents.add.destination.placeholder')}
-            ref={textboxRef}>
+            ref={textboxRef}
+          >
             <FormElementAddon
               onClick={() => {
                 if (textboxRef.current != null) {
                   setDestination(textboxRef.current.value);
                 }
                 setIsDirectoryListOpen(!isDirectoryListOpen);
-              }}>
+              }}
+            >
               <Search />
             </FormElementAddon>
             <Portal>
@@ -135,7 +137,8 @@ const FilesystemBrowserTextbox = forwardRef<HTMLInputElement, FilesystemBrowserT
                 onClick={(event) => event.nativeEvent.stopImmediatePropagation()}
                 overlayProps={{isInteractive: false}}
                 padding={false}
-                triggerRef={textboxRef}>
+                triggerRef={textboxRef}
+              >
                 <FilesystemBrowser
                   directory={destination}
                   selectable={selectable}

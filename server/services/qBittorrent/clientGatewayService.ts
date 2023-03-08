@@ -30,8 +30,9 @@ import type {TorrentTracker} from '@shared/types/TorrentTracker';
 import type {TransferSummary} from '@shared/types/TransferData';
 import type {SetClientSettingsOptions} from '@shared/types/api/client';
 
-import ClientGatewayService from '../interfaces/clientGatewayService';
+import ClientGatewayService from '../clientGatewayService';
 import ClientRequestManager from './clientRequestManager';
+import {fetchUrls} from '../../util/fetchUtil';
 import {getDomainsFromURLs} from '../../util/torrentPropertiesUtil';
 import {
   getTorrentPeerPropertiesFromFlags,
@@ -45,7 +46,10 @@ import {TorrentTrackerType} from '../../../shared/types/TorrentTracker';
 
 class QBittorrentClientGatewayService extends ClientGatewayService {
   private clientRequestManager = new ClientRequestManager(this.user.client as QBittorrentConnectionSettings);
-  private cachedProperties: Record<string, Pick<TorrentProperties, 'dateCreated' | 'isPrivate' | 'trackerURIs'>> = {};
+  private cachedProperties: Record<
+    string,
+    Pick<TorrentProperties, 'comment' | 'dateCreated' | 'isPrivate' | 'trackerURIs'>
+  > = {};
 
   async addTorrentsByFile({
     files,
@@ -98,20 +102,24 @@ class QBittorrentClientGatewayService extends ClientGatewayService {
   }
 
   async addTorrentsByURL({
-    urls,
+    urls: inputUrls,
     cookies,
     destination,
     tags,
     isBasePath,
     isCompleted,
+    isInitialSeeding,
     isSequential,
     start,
   }: Required<AddTorrentByURLOptions>): Promise<string[]> {
-    // TODO: isInitialSeeding not implemented
+    const {files, urls} = await fetchUrls(inputUrls, cookies);
+
+    if (!files[0] && !urls[0]) {
+      throw new Error();
+    }
 
     await this.clientRequestManager
       .torrentsAddURLs(urls, {
-        cookie: cookies != null ? Object.values(cookies)[0]?.[0] : undefined,
         savepath: destination,
         tags: tags.join(','),
         paused: !start,
@@ -121,6 +129,19 @@ class QBittorrentClientGatewayService extends ClientGatewayService {
         skip_checking: isCompleted,
       })
       .then(this.processClientRequestSuccess, this.processClientRequestError);
+
+    if (files[0]) {
+      return this.addTorrentsByFile({
+        files: files.map((file) => file.toString('base64')) as [string, ...string[]],
+        destination,
+        tags,
+        isBasePath,
+        isCompleted,
+        isInitialSeeding,
+        isSequential,
+        start,
+      });
+    }
 
     return [];
   }
@@ -340,6 +361,7 @@ class QBittorrentClientGatewayService extends ClientGatewayService {
 
             if (properties != null && trackers != null && Array.isArray(trackers)) {
               this.cachedProperties[hash] = {
+                comment: properties?.comment,
                 dateCreated: properties?.creation_date,
                 isPrivate: trackers[0]?.msg.includes('is private'),
                 trackerURIs: getDomainsFromURLs(
@@ -356,10 +378,16 @@ class QBittorrentClientGatewayService extends ClientGatewayService {
           {},
           ...(await Promise.all(
             infos.map(async (info) => {
-              const {dateCreated = 0, isPrivate = false, trackerURIs = []} = this.cachedProperties[info.hash] || {};
+              const {
+                comment = '',
+                dateCreated = 0,
+                isPrivate = false,
+                trackerURIs = [],
+              } = this.cachedProperties[info.hash] || {};
 
               const torrentProperties: TorrentProperties = {
                 bytesDone: info.completed,
+                comment: comment,
                 dateActive: info.dlspeed > 0 || info.upspeed > 0 ? -1 : info.last_activity,
                 dateAdded: info.added_on,
                 dateCreated,

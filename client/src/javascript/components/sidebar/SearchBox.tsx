@@ -5,13 +5,12 @@ import {useLingui} from '@lingui/react';
 
 import {Close, Search} from '@client/ui/icons';
 import TorrentFilterStore from '@client/stores/TorrentFilterStore';
-import UIActions from '@client/actions/UIActions';
 
 const SearchBox: FC = observer(() => {
   const {i18n} = useLingui();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const {searchFilter} = TorrentFilterStore.filters;
+  const {searchFilter} = TorrentFilterStore;
 
   useEffect(() => {
     if (inputRef.current != null) {
@@ -29,17 +28,19 @@ const SearchBox: FC = observer(() => {
         sidebar__item: true, // eslint-disable-line
         search: true,
         'is-in-use': isSearchActive,
-      })}>
+      })}
+    >
       {isSearchActive && (
         <button
           className="button search__reset-button"
           onClick={() => {
-            UIActions.setTorrentsSearchFilter('');
+            TorrentFilterStore.setSearchFilter('');
             if (inputRef.current != null) {
               inputRef.current.blur();
             }
           }}
-          type="button">
+          type="button"
+        >
           <Close />
         </button>
       )}
@@ -50,7 +51,7 @@ const SearchBox: FC = observer(() => {
         type="text"
         placeholder={i18n._('sidebar.search.placeholder')}
         onChange={(event) => {
-          UIActions.setTorrentsSearchFilter(event.target.value);
+          TorrentFilterStore.setSearchFilter(event.target.value);
         }}
       />
     </div>

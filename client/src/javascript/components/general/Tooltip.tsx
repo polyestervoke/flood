@@ -18,6 +18,7 @@ type Clearance = Coordinates & {
 };
 
 interface TooltipProps {
+  children?: React.ReactNode;
   align?: Align;
   anchor?: Align;
   position?: Position;
@@ -434,7 +435,8 @@ class Tooltip extends Component<TooltipProps, TooltipStates> {
         }}
         onMouseEnter={() => this.handleMouseEnter()}
         onMouseLeave={() => this.handleMouseLeave()}
-        ref={this.triggerNode}>
+        ref={this.triggerNode}
+      >
         {children}
         {ReactDOM.createPortal(
           <div
@@ -442,7 +444,8 @@ class Tooltip extends Component<TooltipProps, TooltipStates> {
             ref={this.tooltipNode}
             style={tooltipStyle}
             onMouseEnter={this.handleTooltipMouseEnter}
-            onMouseLeave={this.handleTooltipMouseLeave}>
+            onMouseLeave={this.handleTooltipMouseLeave}
+          >
             <div className={contentClassName}>{content}</div>
           </div>,
           appElement,

@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import {forwardRef, MutableRefObject, ReactNodeArray, useRef, useState} from 'react';
+import {forwardRef, MutableRefObject, ReactElement, useRef, useState} from 'react';
 import {observer} from 'mobx-react';
 import {Trans, useLingui} from '@lingui/react';
 import {useEnsuredForwardedRef} from 'react-use';
@@ -75,8 +75,8 @@ const TableHeading = observer(
       };
 
       return (
-        <div className="table__row table__row--heading" role="rowheader" ref={tableHeading}>
-          {SettingStore.floodSettings.torrentListColumns.reduce((accumulator: ReactNodeArray, {id, visible}) => {
+        <div className="table__row table__row--heading" role="row" ref={tableHeading}>
+          {SettingStore.floodSettings.torrentListColumns.reduce((accumulator: Array<ReactElement>, {id, visible}) => {
             if (!visible) {
               return accumulator;
             }
@@ -131,13 +131,22 @@ const TableHeading = observer(
                     WebkitTapHighlightColor: 'transparent',
                   },
                 }}
+                role="columnheader"
+                aria-sort={
+                  isSortActive
+                    ? SettingStore.floodSettings.sortTorrents.direction === 'asc'
+                      ? 'ascending'
+                      : 'descending'
+                    : 'none'
+                }
                 type="button"
                 key={id}
                 onClick={() => onCellClick(id)}
                 onFocus={() => onCellFocus()}
                 style={{
                   width: `${width}px`,
-                }}>
+                }}
+              >
                 <span className="table__heading__label" title={i18n._(labelID)}>
                   <Trans id={labelID} />
                 </span>

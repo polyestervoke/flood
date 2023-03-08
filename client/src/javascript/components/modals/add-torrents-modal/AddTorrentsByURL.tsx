@@ -55,13 +55,10 @@ const AddTorrentsByURL: FC = () => {
                 type="button"
                 onClick={() => {
                   if (typeof navigator.registerProtocolHandler === 'function') {
-                    navigator.registerProtocolHandler(
-                      'magnet',
-                      `${ConfigStore.baseURI}?action=add-urls&url=%s`,
-                      'Magnet -> Flood',
-                    );
+                    navigator.registerProtocolHandler('magnet', `${ConfigStore.baseURI}?action=add-urls&url=%s`);
                   }
-                }}>
+                }}
+              >
                 <em css={{fontSize: '0.8em'}}>{i18n._('torrents.add.tab.url.register.magnet.handler')}</em>
               </button>
             )}
@@ -69,7 +66,9 @@ const AddTorrentsByURL: FC = () => {
         }
         placeholder={i18n._('torrents.add.tab.url.input.placeholder')}
         defaultValues={
-          (UIStore.activeModal?.id === 'add-torrents' && UIStore.activeModal?.initialURLs) || [{id: 0, value: ''}]
+          (UIStore.activeModal?.id === 'add-torrents' &&
+            UIStore.activeModal?.tab === 'by-url' &&
+            UIStore.activeModal?.urls) || [{id: 0, value: ''}]
         }
       />
       <TextboxRepeater
@@ -139,7 +138,7 @@ const AddTorrentsByURL: FC = () => {
             start: formData.start,
             tags,
           }).then(() => {
-            UIStore.dismissModal();
+            UIStore.setActiveModal(null);
           });
 
           saveAddTorrentsUserPreferences({

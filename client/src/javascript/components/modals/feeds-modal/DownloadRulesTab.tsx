@@ -1,4 +1,4 @@
-import {FC, ReactNodeArray, useRef, useState} from 'react';
+import {FC, ReactElement, useRef, useState} from 'react';
 import {Trans, useLingui} from '@lingui/react';
 
 import {Button, Form, FormError, FormRow, FormRowItem} from '@client/ui';
@@ -159,11 +159,12 @@ const DownloadRulesTab: FC = () => {
           setIsSubmitting(false);
         }
       }}
-      ref={formRef}>
+      ref={formRef}
+    >
       <ModalFormSectionHeader>
         <Trans id="feeds.existing.rules" />
       </ModalFormSectionHeader>
-      {Object.keys(errors).reduce((memo: ReactNodeArray, key) => {
+      {Object.keys(errors).reduce((memo: Array<ReactElement>, key) => {
         if (errors[key as ValidatedField] != null) {
           memo.push(
             <FormRow key={`error-${key}`}>
@@ -197,6 +198,7 @@ const DownloadRulesTab: FC = () => {
       </FormRow>
       {isEditing ? (
         <DownloadRuleForm
+          key={currentRule?._id || 'initial'}
           rule={currentRule ?? initialRule}
           isPatternMatched={isPatternMatched}
           isSubmitting={isSubmitting}
@@ -211,7 +213,8 @@ const DownloadRulesTab: FC = () => {
           <Button
             onClick={() => {
               setIsEditing(true);
-            }}>
+            }}
+          >
             <Trans id="button.new" />
           </Button>
         </FormRow>

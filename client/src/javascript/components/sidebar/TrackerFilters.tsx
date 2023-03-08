@@ -1,13 +1,14 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {observer} from 'mobx-react';
 import {useLingui} from '@lingui/react';
 
 import SidebarFilter from './SidebarFilter';
+import Expando from './Expando';
 import TorrentFilterStore from '../../stores/TorrentFilterStore';
-import UIActions from '../../actions/UIActions';
 
 const TrackerFilters: FC = observer(() => {
   const {i18n} = useLingui();
+  const [expanded, setExpanded] = useState<boolean>(true);
 
   const trackers = Object.keys(TorrentFilterStore.taxonomy.trackerCounts);
 
@@ -28,10 +29,12 @@ const TrackerFilters: FC = observer(() => {
 
   const filterElements = filterItems.map((filter) => (
     <SidebarFilter
-      handleClick={UIActions.setTorrentTrackerFilter}
+      handleClick={(tracker, event) => TorrentFilterStore.setTrackerFilters(tracker, event)}
       count={TorrentFilterStore.taxonomy.trackerCounts[filter] || 0}
       key={filter}
-      isActive={filter === TorrentFilterStore.filters.trackerFilter}
+      isActive={
+        (filter === '' && !TorrentFilterStore.trackerFilter.length) || TorrentFilterStore.trackerFilter.includes(filter)
+      }
       name={filter}
       slug={filter}
       size={TorrentFilterStore.taxonomy.trackerSizes[filter]}
@@ -40,12 +43,18 @@ const TrackerFilters: FC = observer(() => {
 
   const title = i18n._('filter.tracker.title');
 
+  const expandoClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <ul aria-label={title} className="sidebar-filter sidebar__item" role="menu">
-      <li className="sidebar-filter__item sidebar-filter__item--heading" role="none">
-        {title}
+      <li className="sidebar-filter__item" role="none">
+        <Expando className="sidebar-filter__item--heading" expanded={expanded} handleClick={expandoClick}>
+          {title}
+        </Expando>
       </li>
-      {filterElements}
+      {expanded && filterElements}
     </ul>
   );
 });

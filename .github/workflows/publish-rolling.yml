@@ -14,7 +14,7 @@ jobs:
         node: [16]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v1
@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.node }}
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm ci --no-optional
+      - run: npm ci
 
       - name: Tag rolling release
         id: tag_release
@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up QEMU
         run: |
@@ -118,8 +118,18 @@ jobs:
   docker-dbg:
     runs-on: ubuntu-20.04
 
+    strategy:
+      matrix:
+        node: [16]
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Set up QEMU
         run: |
@@ -252,7 +262,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up QEMU
         run: |

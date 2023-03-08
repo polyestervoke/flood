@@ -13,7 +13,6 @@ import SettingActions from '@client/actions/SettingActions';
 import SettingStore from '@client/stores/SettingStore';
 import TorrentFilterStore from '@client/stores/TorrentFilterStore';
 import TorrentStore from '@client/stores/TorrentStore';
-import UIActions from '@client/actions/UIActions';
 import SortDirections from '@client/constants/SortDirections';
 
 import type {TorrentListColumn} from '@client/constants/TorrentListColumns';
@@ -37,7 +36,7 @@ const TorrentList: FC = observer(() => {
 
   useEffect(() => {
     const dispose = reaction(
-      () => TorrentFilterStore.filters,
+      () => TorrentFilterStore.filterTrigger,
       () => {
         if (listViewportRef.current != null) {
           listViewportRef.current.scrollTo(0);
@@ -62,7 +61,7 @@ const TorrentList: FC = observer(() => {
 
     if ((metaKey || ctrlKey) && key === 'a') {
       e.preventDefault();
-      UIActions.selectAllTorrents();
+      TorrentStore.selectAllTorrents();
     }
   });
 
@@ -88,17 +87,18 @@ const TorrentList: FC = observer(() => {
         <div className="torrents__alert">
           <Trans id="torrents.list.no.torrents" />
         </div>
-        {TorrentFilterStore.isFilterActive && (
+        {TorrentFilterStore.isFilterActive ? (
           <div className="torrents__alert__action">
             <Button
               onClick={() => {
                 TorrentFilterStore.clearAllFilters();
               }}
-              priority="tertiary">
+              priority="tertiary"
+            >
               <Trans id="torrents.list.clear.filters" />
             </Button>
           </div>
-        )}
+        ) : null}
       </div>
     );
   } else {

@@ -1,14 +1,14 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {observer} from 'mobx-react';
 import {useLingui} from '@lingui/react';
 
 import {Active, All, Completed, DownloadSmall, Error, Inactive, Stop, Spinner, UploadSmall} from '@client/ui/icons';
 import TorrentFilterStore from '@client/stores/TorrentFilterStore';
-import UIActions from '@client/actions/UIActions';
 
 import type {TorrentStatus} from '@shared/constants/torrentStatusMap';
 
 import SidebarFilter from './SidebarFilter';
+import Expando from './Expando';
 
 const StatusFilters: FC = observer(() => {
   const {i18n} = useLingui();
@@ -67,11 +67,14 @@ const StatusFilters: FC = observer(() => {
 
   const filterElements = filters.map((filter) => (
     <SidebarFilter
-      handleClick={(selection) => UIActions.setTorrentStatusFilter(selection as TorrentStatus)}
+      handleClick={(selection, event) => TorrentFilterStore.setStatusFilters(selection as TorrentStatus, event)}
       count={TorrentFilterStore.taxonomy.statusCounts[filter.slug] || 0}
       key={filter.slug}
       icon={filter.icon}
-      isActive={filter.slug === TorrentFilterStore.filters.statusFilter}
+      isActive={
+        (filter.slug === '' && !TorrentFilterStore.statusFilter.length) ||
+        TorrentFilterStore.statusFilter.includes(filter.slug as TorrentStatus)
+      }
       name={filter.label}
       slug={filter.slug}
     />
@@ -79,12 +82,19 @@ const StatusFilters: FC = observer(() => {
 
   const title = i18n._('filter.status.title');
 
+  const [expanded, setExpanded] = useState<boolean>(true);
+  const expandoClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <ul aria-label={title} className="sidebar-filter sidebar__item" role="menu">
-      <li className="sidebar-filter__item sidebar-filter__item--heading" role="none">
-        {title}
+      <li className="sidebar-filter__item" role="none">
+        <Expando className="sidebar-filter__item--heading" expanded={expanded} handleClick={expandoClick}>
+          {title}
+        </Expando>
       </li>
-      {filterElements}
+      {expanded && filterElements}
     </ul>
   );
 });

@@ -10,6 +10,7 @@ import type {Language} from '@client/constants/Languages';
 import type {FloodSettings} from '@shared/types/FloodSettings';
 
 import ModalFormSectionHeader from '../ModalFormSectionHeader';
+import MiscUISettingsList from './lists/MiscUISettingsList';
 import TorrentContextMenuActionsList from './lists/TorrentContextMenuActionsList';
 import TorrentListColumnsList from './lists/TorrentListColumnsList';
 
@@ -44,7 +45,8 @@ const UITab: FC<UITabProps> = ({onSettingsChange}: UITabProps) => {
             language: newSelectedLanguage,
           });
         }
-      }}>
+      }}
+    >
       <ModalFormSectionHeader key="locale-header">
         <Trans id="settings.ui.language" />
       </ModalFormSectionHeader>
@@ -52,9 +54,7 @@ const UITab: FC<UITabProps> = ({onSettingsChange}: UITabProps) => {
         <Select defaultID={selectedLanguage} id="language">
           {Object.keys(Languages).map((languageID) => (
             <SelectItem key={languageID} id={languageID}>
-              {Languages[languageID as 'auto'].id != null
-                ? i18n._(Languages[languageID as 'auto'].id)
-                : Languages[languageID as Language]}
+              {languageID === 'auto' ? i18n._(Languages[languageID].id) : (Languages[languageID as Language] as string)}
             </SelectItem>
           ))}
         </Select>
@@ -81,7 +81,8 @@ const UITab: FC<UITabProps> = ({onSettingsChange}: UITabProps) => {
           defaultChecked={torrentListViewSize === 'condensed'}
           groupID="ui-torrent-size"
           id="condensed"
-          width="auto">
+          width="auto"
+        >
           <Trans id="settings.ui.torrent.size.condensed" />
         </Radio>
       </FormRow>
@@ -96,6 +97,12 @@ const UITab: FC<UITabProps> = ({onSettingsChange}: UITabProps) => {
       </ModalFormSectionHeader>
       <FormRow>
         <TorrentContextMenuActionsList onSettingsChange={onSettingsChange} />
+      </FormRow>
+      <ModalFormSectionHeader>
+        <Trans id="settings.ui.misc" />
+      </ModalFormSectionHeader>
+      <FormRow>
+        <MiscUISettingsList onSettingsChange={onSettingsChange} />
       </FormRow>
     </Form>
   );

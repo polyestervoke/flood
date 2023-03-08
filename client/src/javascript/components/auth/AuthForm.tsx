@@ -1,9 +1,9 @@
 import {FC, useRef, useState} from 'react';
 import {useLingui} from '@lingui/react';
+import {useNavigate} from 'react-router';
 
 import {Button, Form, FormError, FormRow, Panel, PanelContent, PanelHeader, PanelFooter, Textbox} from '@client/ui';
 import AuthActions from '@client/actions/AuthActions';
-import history from '@client/util/history';
 
 import {AccessLevel} from '@shared/schema/constants/Auth';
 
@@ -25,6 +25,8 @@ const AuthForm: FC<AuthFormProps> = ({mode}: AuthFormProps) => {
   const clientConnectionSettingsRef = useRef<ClientConnectionSettings | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | {id: string} | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const isLoginMode = mode === 'login';
 
@@ -60,12 +62,12 @@ const AuthForm: FC<AuthFormProps> = ({mode}: AuthFormProps) => {
               })
                 .then(() => {
                   setIsSubmitting(false);
-                  history.replace('overview');
+                  navigate('/overview', {replace: true});
                 })
                 .catch((error: Error) => {
                   setIsSubmitting(false);
                   setErrorMessage(error.message);
-                  history.replace('login');
+                  navigate('/login', {replace: true});
                 });
             } else {
               const config = formData as RegisterFormData;
@@ -91,7 +93,7 @@ const AuthForm: FC<AuthFormProps> = ({mode}: AuthFormProps) => {
               }).then(
                 () => {
                   setIsSubmitting(false);
-                  history.replace('overview');
+                  navigate('/overview', {replace: true});
                 },
                 (error: Error) => {
                   setIsSubmitting(false);
@@ -100,7 +102,8 @@ const AuthForm: FC<AuthFormProps> = ({mode}: AuthFormProps) => {
               );
             }
           }}
-          ref={formRef}>
+          ref={formRef}
+        >
           <PanelHeader>
             <h1>{isLoginMode ? i18n._('auth.login') : i18n._('auth.create.an.account')}</h1>
           </PanelHeader>
@@ -144,7 +147,8 @@ const AuthForm: FC<AuthFormProps> = ({mode}: AuthFormProps) => {
                   if (formRef.current != null) {
                     formRef.current.resetForm();
                   }
-                }}>
+                }}
+              >
                 {i18n._('auth.input.clear')}
               </Button>
               <Button isLoading={isSubmitting} type="submit">

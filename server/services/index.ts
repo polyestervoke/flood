@@ -1,6 +1,6 @@
 import type {UserInDatabase} from '@shared/schema/Auth';
 
-import ClientGatewayService from './interfaces/clientGatewayService';
+import ClientGatewayService from './clientGatewayService';
 import FeedService from './feedService';
 import HistoryService from './historyService';
 import NotificationService from './notificationService';
@@ -42,20 +42,21 @@ export const getAllServices = ({_id}: UserInDatabase) => {
   return serviceInstances[_id];
 };
 
-export const destroyUserServices = (userId: UserInDatabase['_id']) => {
+export const destroyUserServices = async (userId: UserInDatabase['_id'], drop = false) => {
   const userServiceInstances = serviceInstances[userId];
+
   delete serviceInstances[userId];
-  Object.keys(userServiceInstances).forEach((key) => {
-    const serviceName = key as keyof ServiceInstances;
-    userServiceInstances[serviceName].destroy();
-  });
+
+  return Promise.all(
+    Object.keys(userServiceInstances).map((key) => userServiceInstances[key as keyof ServiceInstances].destroy(drop)),
+  );
 };
 
 export const bootstrapServicesForUser = (user: UserInDatabase) => {
   const {_id} = user;
 
   if (serviceInstances[_id] != null) {
-    destroyUserServices(_id);
+    throw new Error('User instance already exists');
   }
 
   const userServiceInstances = {

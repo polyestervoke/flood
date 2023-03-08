@@ -1,4 +1,4 @@
-import {FC, ReactNodeArray, useRef, useState} from 'react';
+import {FC, ReactElement, useRef, useState} from 'react';
 import {Trans, useLingui} from '@lingui/react';
 
 import {Button, Form, FormError, FormRow, FormRowItem} from '@client/ui';
@@ -132,11 +132,12 @@ const FeedsTab: FC = () => {
 
           setIsSubmitting(false);
         }}
-        ref={formRef}>
+        ref={formRef}
+      >
         <ModalFormSectionHeader>
           <Trans id="feeds.existing.feeds" />
         </ModalFormSectionHeader>
-        {Object.keys(errors).reduce((memo: ReactNodeArray, key) => {
+        {Object.keys(errors).reduce((memo: Array<ReactElement>, key) => {
           if (errors[key as ValidatedField] != null) {
             memo.push(
               <FormRow key={`error-${key}`}>
@@ -177,6 +178,7 @@ const FeedsTab: FC = () => {
           <FeedForm
             currentFeed={currentFeed}
             defaultFeed={defaultFeed}
+            key={currentFeed?._id || 'initial'}
             intervalMultipliers={INTERVAL_MULTIPLIERS}
             isSubmitting={isSubmitting}
             onCancel={() => {
@@ -191,7 +193,8 @@ const FeedsTab: FC = () => {
             <Button
               onClick={() => {
                 setIsEditing(true);
-              }}>
+              }}
+            >
               <Trans id="button.new" />
             </Button>
           </FormRow>

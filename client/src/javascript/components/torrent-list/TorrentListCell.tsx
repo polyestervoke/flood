@@ -5,6 +5,7 @@ import {observer} from 'mobx-react';
 import {Trans, useLingui} from '@lingui/react';
 
 import {
+  CalendarFinished,
   CalendarCreated,
   Calendar,
   CheckmarkThick,
@@ -40,6 +41,7 @@ const ICONS: Partial<Record<TorrentListColumn, JSX.Element>> = {
   hash: <Hash />,
   dateAdded: <Calendar />,
   dateCreated: <CalendarCreated />,
+  dateFinished: <CalendarFinished />,
   isPrivate: <Lock />,
   message: <TrackerMessage />,
   percentComplete: <DownloadThick />,
@@ -116,6 +118,8 @@ const DefaultTorrentListCellContent: FC<TorrentListCellContentProps> = observer(
         return <DateCell date={torrent[column]} />;
       case 'dateCreated':
         return <DateCell date={torrent[column]} />;
+      case 'dateFinished':
+        return <DateCell date={torrent[column]} />;
       case 'downRate':
         return <Size value={torrent[column]} isSpeed />;
       case 'upRate':
@@ -182,7 +186,8 @@ const TorrentListCell: FC<TorrentListCellProps> = observer(
         }
         css={{pointerEvents: 'none', userSelect: 'none'}}
         role="cell"
-        style={{width: `${width}px`}}>
+        style={{width: `${width}px`}}
+      >
         {icon}
         {TorrentListCellContent ? (
           <TorrentListCellContent torrent={TorrentStore.torrents[hash]} column={column} />

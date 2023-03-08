@@ -1,8 +1,7 @@
+import type {EventMap} from 'typed-emitter';
 import type {Operation} from 'fast-json-patch';
 import type {Request, Response} from 'express';
 import type TypedEmitter from 'typed-emitter';
-
-import type {HistorySnapshot} from '@shared/constants/historySnapshotTypes';
 
 import DiskUsage from '../models/DiskUsage';
 import {getAllServices} from '../services';
@@ -11,11 +10,8 @@ import ServerEvent from '../models/ServerEvent';
 import type {DiskUsageSummary} from '../models/DiskUsage';
 import type {TransferHistory} from '../../shared/types/TransferData';
 
-export default async (req: Request<unknown, unknown, unknown, {historySnapshot: HistorySnapshot}>, res: Response) => {
-  const {
-    query: {historySnapshot = 'FIVE_MINUTE'},
-    user,
-  } = req;
+export default async (req: Request, res: Response) => {
+  const {user} = req;
 
   if (user == null) {
     return;
@@ -26,7 +22,7 @@ export default async (req: Request<unknown, unknown, unknown, {historySnapshot: 
   const fetchTorrentList = serviceInstances.torrentService.fetchTorrentList();
 
   // Hook into events and stop listening when connection is closed
-  const handleEvents = <T extends TypedEmitter<Record<string, unknown>>>(
+  const handleEvents = <T extends TypedEmitter<EventMap>>(
     emitter: T,
     event: Parameters<T['on']>[0],
     handler: Parameters<T['on']>[1],
@@ -60,7 +56,7 @@ export default async (req: Request<unknown, unknown, unknown, {historySnapshot: 
   }
 
   // Transfer history
-  await serviceInstances.historyService.getHistory({snapshot: historySnapshot}).then(
+  await serviceInstances.historyService.getHistory().then(
     (snapshot) => {
       const {timestamps: lastTimestamps} = snapshot || {timestamps: []};
       const lastTimestamp = lastTimestamps[lastTimestamps.length - 1];

@@ -167,7 +167,8 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
               '@media (max-width: 720px)': headerStyle,
             },
           ]}
-          key={parentDirectory}>
+          key={parentDirectory}
+        >
           <button type="button" onClick={() => onItemSelection?.(parentDirectory, true)}>
             <Arrow css={{transform: 'scale(0.75) rotate(180deg)'}} />
             ..
@@ -189,7 +190,8 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
                     listItemSelectableStyle,
                     {fontWeight: 'bold', '@media (max-width: 720px)': {display: 'none'}},
                   ]}
-                  key={inputDestination}>
+                  key={inputDestination}
+                >
                   <button type="button" onClick={() => onItemSelection?.(inputDestination, false)}>
                     <FolderClosedOutlined />
                     <span css={{whiteSpace: 'pre-wrap'}}>{lastSegment}</span>
@@ -216,12 +218,14 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
                     isDirectorySelectable ? listItemSelectableStyle : undefined,
                     directoryMatched.includes(subDirectory) ? {fontWeight: 'bold'} : undefined,
                   ]}
-                  key={destination}>
+                  key={destination}
+                >
                   <button
                     type="button"
                     disabled={!isDirectorySelectable}
                     tabIndex={isDirectorySelectable ? 0 : -1}
-                    onClick={isDirectorySelectable ? () => onItemSelection?.(destination, true) : undefined}>
+                    onClick={isDirectorySelectable ? () => onItemSelection?.(destination, true) : undefined}
+                  >
                     <FolderClosedSolid />
                     {subDirectory}
                   </button>
@@ -245,12 +249,14 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
                     isFileSelectable ? listItemSelectableStyle : undefined,
                     fileMatched.includes(file) ? {fontWeight: 'bold'} : undefined,
                   ]}
-                  key={destination}>
+                  key={destination}
+                >
                   <button
                     type="button"
                     disabled={!isFileSelectable}
                     tabIndex={isFileSelectable ? 0 : -1}
-                    onClick={isFileSelectable ? () => onItemSelection?.(destination, false) : undefined}>
+                    onClick={isFileSelectable ? () => onItemSelection?.(destination, false) : undefined}
+                  >
                     <File />
                     {file}
                   </button>
@@ -280,7 +286,8 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
             marginTop: '-3px',
             verticalAlign: 'middle',
           },
-        }}>
+        }}
+      >
         {currentDirectory && (
           <li
             css={[
@@ -289,6 +296,7 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
               itemPadding,
               {
                 whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all',
                 '.icon': {
                   transform: 'scale(0.9)',
                   marginTop: '-2px !important',
@@ -297,7 +305,8 @@ const FilesystemBrowser: FC<FilesystemBrowserProps> = memo(
                   display: 'none',
                 },
               },
-            ]}>
+            ]}
+          >
             <FolderOpenSolid />
             {currentDirectory}
           </li>
