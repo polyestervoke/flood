@@ -18,10 +18,10 @@ Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://
 ```
 yarn build outputs no error
 vi package.json
-  "version": 1.0.0
-git tag v1.0.0
+  "version": "1.0.0-1"
+git tag v1.0.0-1
 git push --tags
-Docker image will build by Github Actions
+Github Actions will build and publish to Docker Hub
 ```
 
 ## Development
