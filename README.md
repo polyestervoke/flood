@@ -16,6 +16,7 @@ Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://
 ## Release
 
 ```
+yarn build outputs no error
 vi package.json
   "version": 1.0.0
 git tag v1.0.0
