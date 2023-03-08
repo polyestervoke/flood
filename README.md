@@ -20,6 +20,7 @@ vi package.json
   "version": 1.0.0
 git tag v1.0.0
 git push --tags
+Docker image will build by Github Actions
 ```
 
 ## Development
