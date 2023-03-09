@@ -13,17 +13,6 @@ Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://
 
 - Docker Image: [sabersalv/flood](https://hub.docker.com/r/sabersalv/flood/)
 
-## Release
-
-```
-yarn build outputs no error
-vi package.json
-  "version": "1.0.0-1"
-git tag v1.0.0-1
-git push --tags
-Github Actions will build and publish to Docker Hub
-```
-
 ## Development
 
 ```
@@ -33,4 +22,15 @@ npm run build
 npm run start:development:client
 npm run start:development:server
 rtorrent -o network.scgi.open_local=/tmp/rtorrent.sock
+```
+
+## Release
+
+```
+npm run build     # outputs no error
+vi package.json
+  "version": "1.0.0-1"
+git tag v1.0.0-1
+git push --tags
+Github Actions will build and publish to Docker Hub
 ```
