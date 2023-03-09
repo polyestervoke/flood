@@ -1,6 +1,8 @@
 # Flood Saber's Fork
 
-Forked from [flood](https://github.com/jesec/flood), credits to [jesec](https://github.com/jesec). The goal is to replace rutorrent, with following changes:
+> [Original README](./README.original.md), forked from [jesec/flood](https://github.com/jesec/flood)
+
+The goal is to replace rutorrent, with following changes:
 
 - Save torrent file as human name instead of hash name: [PR](https://github.com/sabersalv/flood/pull/3)
 - Change cookie SameSite from Strict to Lax: [PR](https://github.com/sabersalv/flood/pull/4)
