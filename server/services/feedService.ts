@@ -1,6 +1,6 @@
 import path from 'path';
 import Datastore from '@seald-io/nedb';
-import { mapKeys, pickBy } from 'lodash'
+import {mapKeys, pickBy} from 'lodash';
 
 import type {FeedItem} from 'feedsub';
 
@@ -12,7 +12,7 @@ import {getFeedItemsMatchingRules, getTorrentUrlsFromFeedItem} from '../util/fee
 import type {AddFeedOptions, AddRuleOptions, ModifyFeedOptions} from '../../shared/types/api/feed-monitor';
 import type {Feed, Item, MatchedTorrents, Rule} from '../../shared/types/Feed';
 import type {FeedReaderOptions} from '../models/FeedReader';
-import type { AddTorrentByURLOptions } from '@shared/schema/api/torrents';
+import type {AddTorrentByURLOptions} from '@shared/schema/api/torrents';
 
 class FeedService extends BaseService<Record<string, never>> {
   rules: Record<string, Array<Rule>> = {};
@@ -348,7 +348,13 @@ class FeedService extends BaseService<Record<string, never>> {
   }
 }
 
-function transformUrls({urls, feedUrl}: {urls: AddTorrentByURLOptions['urls'], feedUrl: string}): AddTorrentByURLOptions['urls'] {
+function transformUrls({
+  urls,
+  feedUrl,
+}: {
+  urls: AddTorrentByURLOptions['urls'];
+  feedUrl: string;
+}): AddTorrentByURLOptions['urls'] {
   const url = new URL(feedUrl);
   const params = mapKeys(
     pickBy(Object.fromEntries(url.searchParams), (v, k) => k.startsWith('_')),

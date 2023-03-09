@@ -146,7 +146,8 @@ const DirectoryFiles: FC<DirectoryFilesProps> = ({depth, items, hash, path, onIt
               TorrentActions.getTorrentContentsDataPermalink(hash, [file.index]).then((url) => {
                 window.open(`iina://weblink?url=${url}`, '_self');
               });
-            }}>
+            }}
+          >
             <Player />
           </button>
         </div>

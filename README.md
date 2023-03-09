@@ -34,4 +34,3 @@ npm run start:development:client
 npm run start:development:server
 rtorrent -o network.scgi.open_local=/tmp/rtorrent.sock
 ```
-
